@@ -73,10 +73,10 @@ public class NewsAggregatorController {
 		}
 
 		List<Topic> preferences = user.getTopicPreference();
-		String query = preferences.stream().map(Enum::name).collect(Collectors.joining(" OR "));
+		String query = preferences.isEmpty() ? "keyword" : preferences.stream().map(Enum::name).collect(Collectors.joining(" OR "));
 
 		return webClient.get()
-				.uri("https://newsapi.org/v2/everything?q=keyword&apiKey=717ac5c1c69148e1bbbf7e16e2567d09&q=" + query)
+				.uri("https://newsapi.org/v2/everything?apiKey=717ac5c1c69148e1bbbf7e16e2567d09&q=" + query)
 				.retrieve().bodyToMono(Result.class)
 				.doFinally(signal -> {
 					System.out.println("Received response from News API");
